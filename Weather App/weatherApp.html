@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-200 to-blue-500 min-h-screen font-sans">
+
+  <!-- Navbar -->
+  <nav class="bg-white shadow-md p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-blue-700">🌦️ WeatherNow</h1>
+    <ul class="flex space-x-4 text-blue-700 font-medium">
+      <li><a href="#" class="hover:underline">Home</a></li>
+      <li><a href="#" class="hover:underline">About</a></li>
+      <li><a href="#" class="hover:underline">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Weather Search Section -->
+  <section class="flex flex-col items-center mt-10">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md text-center">
+      <h2 class="text-xl font-semibold text-gray-700 mb-4">Check Real-Time Weather</h2>
+      
+      <div class="flex items-center justify-center mb-4 gap-2">
+        <input id="cityInput" type="text" placeholder="Enter city" class="border border-gray-300 p-2 rounded w-2/3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button onclick="getWeather()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Search</button>
+      </div>
+
+      <select id="cityDropdown" onchange="handleDropdownChange()" class="w-full border border-gray-300 p-2 rounded mb-4">
+        <option value="">Select a famous city</option>
+        <option value="London">London</option>
+        <option value="New York">New York</option>
+        <option value="Tokyo">Tokyo</option>
+        <option value="Paris">Paris</option>
+        <option value="Sydney">Sydney</option>
+        <option value="Mumbai">Mumbai</option>
+      </select>
+
+      <div id="weatherInfo" class="hidden mt-6 animate-fade-in">
+        <h3 class="text-xl font-bold text-gray-800" id="location"></h3>
+        <img id="icon" class="mx-auto my-2" />
+        <p class="text-lg"><strong>Temperature:</strong> <span id="temp"></span>°C</p>
+        <p><strong>Condition:</strong> <span id="condition"></span></p>
+        <p><strong>Feels Like:</strong> <span id="feelslike"></span>°C</p>
+        <p><strong>Humidity:</strong> <span id="humidity"></span>%</p>
+        <p><strong>Wind:</strong> <span id="wind"></span> kph</p>
+        <p><strong>Pressure:</strong> <span id="pressure"></span> mb</p>
+        <p><strong>UV Index:</strong> <span id="uv"></span></p>
+        <p><strong>Visibility:</strong> <span id="visibility"></span> km</p>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .animate-fade-in {
+      animation: fadeIn 0.8s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+
+  <script>
+    const API_KEY = "d24232e7bdd34a47b14160735250606";
+
+    function getWeather(city) {
+      const cityName = city || document.getElementById("cityInput").value.trim();
+      if (!cityName) {
+        alert("Please enter a city name.");
+        return;
+      }
+
+      const url = `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${cityName}&aqi=yes`;
+
+      fetch(url)
+        .then(response => {
+          if (!response.ok) throw new Error("City not found");
+          return response.json();
+        })
+        .then(data => {
+          document.getElementById("weatherInfo").classList.remove("hidden");
+          document.getElementById("location").innerText = `${data.location.name}, ${data.location.country}`;
+          document.getElementById("temp").innerText = data.current.temp_c;
+          document.getElementById("condition").innerText = data.current.condition.text;
+          document.getElementById("feelslike").innerText = data.current.feelslike_c;
+          document.getElementById("humidity").innerText = data.current.humidity;
+          document.getElementById("wind").innerText = data.current.wind_kph;
+          document.getElementById("pressure").innerText = data.current.pressure_mb;
+          document.getElementById("uv").innerText = data.current.uv;
+          document.getElementById("visibility").innerText = data.current.vis_km;
+          document.getElementById("icon").src = "https:" + data.current.condition.icon;
+        })
+        .catch(error => {
+          alert("Error: " + error.message);
+          document.getElementById("weatherInfo").classList.add("hidden");
+        });
+    }
+
+    function handleDropdownChange() {
+      const selectedCity = document.getElementById("cityDropdown").value;
+      if (selectedCity) {
+        document.getElementById("cityInput").value = selectedCity;
+        getWeather(selectedCity);
+      }
+    }
+  </script>
+</body>
+</html>

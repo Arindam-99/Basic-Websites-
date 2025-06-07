@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NewsWave - Real Time News</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          animation: {
+            fade: 'fadeIn 1s ease-in-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: 0 },
+              '100%': { opacity: 1 },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom button style with reversed hover effect */
+    .glass-btn {
+      @apply text-white font-semibold px-6 py-3 rounded-full cursor-pointer select-none relative overflow-hidden transition-transform duration-300 ease-in-out shadow-lg;
+      background: linear-gradient(135deg, #0f766e, #0e7490); /* Darker gradient by default */
+      border: none;
+      font-size: 1rem;
+      line-height: 1.25rem;
+      letter-spacing: 0.015em;
+      user-select: none;
+      position: relative;
+      z-index: 0;
+    }
+
+    .glass-btn::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        60deg,
+        rgba(255, 255, 255, 0.35) 0%,
+        rgba(255, 255, 255, 0.15) 50%,
+        rgba(255, 255, 255, 0.35) 100%
+      );
+      transform: rotate(25deg);
+      transition: transform 0.7s ease, opacity 0.7s ease;
+      pointer-events: none;
+      border-radius: 9999px;
+      opacity: 1;
+      z-index: 0;
+    }
+
+    .glass-btn:hover::before {
+      transform: rotate(25deg) translateX(-30%);
+      opacity: 0.7;
+    }
+
+    .glass-btn:hover {
+      background: linear-gradient(135deg, #14b8a6, #06b6d4); /* lighter gradient on hover */
+      box-shadow: 0 12px 30px rgba(6, 182, 212, 0.5);
+      transform: scale(1.1);
+      z-index: 10;
+    }
+
+    .glass-btn:active {
+      transform: scale(0.97);
+      box-shadow: 0 8px 20px rgba(6, 182, 212, 0.4);
+    }
+
+    /* Scrollbar styling for history */
+    #historyList::-webkit-scrollbar {
+      width: 8px;
+    }
+    #historyList::-webkit-scrollbar-thumb {
+      background-color: #06b6d4;
+      border-radius: 10px;
+    }
+
+    /* Smooth fade in for news cards */
+    .animate-fade {
+      animation: fadeIn 0.8s ease forwards;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-r from-slate-900 to-gray-800 text-white min-h-screen font-sans">
+
+  <!-- Navbar -->
+  <nav class="bg-black/40 backdrop-blur sticky top-0 z-50 shadow-md">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center flex-wrap gap-4">
+      <h1 class="text-2xl font-bold text-teal-400 flex-grow">NewsWave</h1>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search latest news..."
+        class="rounded-md px-4 py-2 w-full max-w-xs text-black"
+      />
+      
+      <!-- History Section -->
+      <div
+        id="historySection"
+        class="bg-black/30 backdrop-blur-md rounded-lg max-w-xs w-full text-sm text-gray-300 px-4 py-2 overflow-y-auto max-h-32 shadow-inner"
+        title="Search History"
+      >
+        <h2 class="font-semibold mb-1 text-teal-400">Search History</h2>
+        <ul id="historyList" class="space-y-1 max-h-28 overflow-y-auto">
+          <!-- History items -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Category Buttons -->
+  <div class="container mx-auto px-4 py-6 flex gap-4 flex-wrap justify-center">
+    <button onclick="fetchNews('technology')" class="glass-btn">Technology</button>
+    <button onclick="fetchNews('business')" class="glass-btn">Business</button>
+    <button onclick="fetchNews('sports')" class="glass-btn">Sports</button>
+    <button onclick="fetchNews('entertainment')" class="glass-btn">Entertainment</button>
+    <button onclick="fetchNews('health')" class="glass-btn">Health</button>
+    <button onclick="fetchNews('science')" class="glass-btn">Science</button>
+  </div>
+
+  <!-- News Section -->
+  <main
+    id="newsContainer"
+    class="container mx-auto px-4 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 py-6"
+    aria-live="polite"
+  >
+    <!-- News Cards will appear here -->
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center text-sm py-4 bg-slate-900 text-gray-400 select-none">
+    © 2025 NewsWave | Powered by NewsAPI
+  </footer>
+
+  <script>
+    const apiKey = "28f4596efba84d7db5e8fc99332f9a43";
+    const newsContainer = document.getElementById("newsContainer");
+    const searchInput = document.getElementById("searchInput");
+    const historyList = document.getElementById("historyList");
+
+    // Load history from localStorage or initialize empty
+    let searchHistory = JSON.parse(localStorage.getItem("newsSearchHistory")) || [];
+
+    function saveToHistory(query) {
+      if (!query || query.trim() === "") return;
+      // Avoid duplicates & keep latest at top
+      searchHistory = searchHistory.filter(item => item.toLowerCase() !== query.toLowerCase());
+      searchHistory.unshift(query);
+      if (searchHistory.length > 8) searchHistory.pop();
+      localStorage.setItem("newsSearchHistory", JSON.stringify(searchHistory));
+      renderHistory();
+    }
+
+    function renderHistory() {
+      historyList.innerHTML = "";
+      if (searchHistory.length === 0) {
+        historyList.innerHTML = `<li class="text-gray-500 italic">No searches yet.</li>`;
+        return;
+      }
+      searchHistory.forEach(item => {
+        const li = document.createElement("li");
+        li.className = "cursor-pointer hover:text-teal-400 transition-colors truncate";
+        li.textContent = item;
+        li.title = item;
+        li.onclick = () => {
+          searchInput.value = item;
+          fetchNews(item);
+        };
+        historyList.appendChild(li);
+      });
+    }
+
+    async function fetchNews(query = "tesla") {
+      newsContainer.innerHTML = `<p class="col-span-full text-center text-teal-400 font-semibold">Loading...</p>`;
+      const fromDate = "2025-05-06";
+      const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
+        query
+      )}&from=${fromDate}&sortBy=publishedAt&apiKey=${apiKey}`;
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (data.status !== "ok") throw new Error("API error");
+
+        renderArticles(data.articles);
+        saveToHistory(query);
+      } catch (err) {
+        newsContainer.innerHTML = `<p class="col-span-full text-red-500 text-center font-semibold">Failed to load news. Try again later.</p>`;
+        console.error(err);
+      }
+    }
+
+    function renderArticles(articles) {
+      if (!articles || articles.length === 0) {
+        newsContainer.innerHTML = `<p class="col-span-full text-yellow-300 text-center font-semibold">No results found.</p>`;
+        return;
+      }
+
+      newsContainer.innerHTML = "";
+      articles.forEach(article => {
+        const card = document.createElement("article");
+        card.className =
+          "bg-white text-black rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out animate-fade flex flex-col";
+
+        card.innerHTML = `
+          <img src="${article.urlToImage || "https://via.placeholder.com/400"}" alt="News Image" class="w-full h-48 object-cover" loading="lazy"/>
+          <div class="p-4 flex flex-col flex-grow">
+            <h2 class="text-lg font-bold mb-2 line-clamp-2">${article.title}</h2>
+            <p class="text-sm text-gray-700 mb-3 flex-grow line-clamp-3">${article.description || "No description available."}</p>
+            <div class="mt-auto flex justify-between items-center text-xs text-gray-600">
+              <span>${new Date(article.publishedAt).toLocaleDateString()}</span>
+              <a href="${article.url}" target="_blank" rel="noopener noreferrer" class="text-teal-600 hover:underline font-semibold">Read more →</a>
+            </div>
+          </div>
+        `;
+        newsContainer.appendChild(card);
+      });
+    }
+
+    // Search on Enter keypress
+    searchInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        const query = this.value.trim();
+        if (query) fetchNews(query);
+      }
+    });
+
+    // Initial load
+    renderHistory();
+    fetchNews("tesla");
+  </script>
+
+</body>
+</html>
