@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <title>User Information Form</title>
+</head>
+<body>
+    <div class="container">
+        <h1>User Information Form</h1>
+        <form id="userForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name"  name="Name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="Email" required>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="Age" required>
+
+            <label>Gender:</label>
+            <label><input type="radio" name="gender" value="Male" required autocomplete="off"> Male</label>
+            <label><input type="radio" name="gender" value="Female" > Female</label>
+            <label><input type="radio" name="gender" value="Other" > Other</label>
+
+            <label for="country">Country:</label>
+            <select id="country" required>
+                <option value="syc">Select your country</option>
+                <option value="USA">USA</option>
+                <option value="Canada">Canada</option>
+                <option value="UK">UK</option>
+                <option value="Australia">Australia</option>
+                <option value="India">India</option>
+                <option value="India">Pakistan</option>
+                <option value="India">Bangladesh</option>
+                <option value="India">Argentina</option>
+
+            </select>
+
+            <label>Favorite Fruits:</label>
+            <label><input type="checkbox" value="Apple"> Apple</label>
+            <label><input type="checkbox" value="Banana"> Banana</label>
+            <label><input type="checkbox" value="Mango"> Mango</label>
+
+            <label for="comments">Comments:</label>
+            <textarea id="comments" rows="4"></textarea>
+
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </form>
+        
+        <div id="output" class="output"></div>
+    </div>
+
+    <script>
+const scriptURL='https://script.google.com/macros/s/AKfycbxkgWotCMyvIKoT9aGtPCndZdHtHrq8i972tCKAVjO6xC7TOI/exec'
+const form = document.forms['google-sheet']
+form.addEventListener('submit',e=>{
+    e.PreventDefault()
+    fetch(scriptURL, { method: 'POST',body:new FormData(form)})
+    .then(response => alert("Thank for Contacting us..! we will contact you soon..."))
+    .catch(error=>console.error('Error!',error.message))
+})
+    </script>
+   <script src="/script.js"></script>
+    
+    
+</body>
+</html>
