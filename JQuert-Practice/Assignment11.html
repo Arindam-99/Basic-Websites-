@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box Animation</title>
+    <style>
+        body {
+            background-color: #f9f9f9;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 50px;
+            margin: 0;
+            background-image: url(/midjourney-desktop-background-of-a-cottage-by-the-sea.avif);
+            background-repeat: no-repeat;
+        }
+
+        h1 {
+            color: #000000; /* Tomato color */
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-family: 'Times New Roman', Times, serif;
+            text-decoration:underline
+        }
+
+        .box {
+            background: #fdce61;
+            height: 100px;
+            width: 100px;
+            position: relative;
+            margin: 20px auto;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        button {
+            background-color: #ff4081;
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #f50057;
+            transform: scale(1.1);
+        }
+
+        button:active {
+            background-color: #c51162;
+            transform: scale(1.05);
+        }
+
+        .control-panel {
+            margin-top: 30px;
+            color: #4caf50; /* Green color */
+        }
+
+        .size-info {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #4b0082; /* Indigo color */
+            border: 2px solid #48e4ff;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #f1f8ff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: fit-content;
+            margin: 20px auto;
+        }
+
+        .size-info span {
+            color: #8c65c2;
+        }
+
+        .status-bar {
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #00bcd4; /* Teal color */
+            color: #fff;
+            border-radius: 10px;
+            width: 50%;
+            margin: 20px auto;
+        }
+
+        p {
+            color: #3e2723; /* Brown color */
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // Initial box size
+            var boxWidth = 100;
+            var boxHeight = 100;
+
+            // Update the size info display
+            function updateSizeInfo() {
+                $(".size-info span").text("Width: " + boxWidth + "px, Height: " + boxHeight + "px");
+            }
+
+            // Update the status bar
+            function updateStatusBar(message) {
+                $(".status-bar").text(message);
+            }
+
+            // Start animation (Only resizing)
+            $("button#start").click(function(){
+                $("div.box").animate({
+                    height: '+=150px',
+                    width: '+=150px'
+                }, 500);
+                // Update the box size
+                boxWidth += 150;
+                boxHeight += 150;
+                updateSizeInfo();
+                updateStatusBar("Box resized!");
+            });
+
+            // Decrease size
+            $("button#decrease-size").click(function(){
+                if (boxWidth > 50 && boxHeight > 50) {
+                    $("div.box").animate({
+                        height: '-=50px',
+                        width: '-=50px'
+                    }, 500);
+                    // Update the box size
+                    boxWidth -= 50;
+                    boxHeight -= 50;
+                    updateSizeInfo();
+                    updateStatusBar("Box size decreased!");
+                } else {
+                    updateStatusBar("Cannot decrease size further!");
+                }
+            });
+
+            // Reset the box to its original position and size
+            $("button#reset-box").click(function(){
+                $("div.box").animate({
+                    height: '100px',
+                    width: '100px',
+                    left: '0px'
+                }, 500);
+                // Reset the box size
+                boxWidth = 100;
+                boxHeight = 100;
+                updateSizeInfo();
+                updateStatusBar("Box reset to original size and position!");
+            });
+
+            // Initial size display
+            updateSizeInfo();
+            updateStatusBar("Ready to resize!");
+        });
+    </script>
+</head>
+<body>
+
+    <h1>Box Resizing and Controls</h1>
+    <div class="box"></div>
+
+    <div class="control-panel">
+        <button id="start">Start Resizing</button>
+        <button id="decrease-size">Decrease Size</button>
+        <button id="reset-box">Reset Box</button>
+    </div>
+
+    <div class="size-info">
+        <p>Current Size: <span>Width: 100px, Height: 100px</span></p>
+    </div>
+
+    <div class="status-bar">
+        Ready to resize!
+    </div>
+
+</body>
+</html>
