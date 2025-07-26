@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QR Code Generator</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        color: #e0e0e0;
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 230px;
+        background: #0f3460;
+        padding: 30px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        box-shadow: 3px 0 15px rgba(0, 255, 255, 0.1);
+        border-right: 1px solid #00f2ff44;
+      }
+
+      .sidebar h3 {
+        color: #00f2ff;
+        font-weight: 600;
+        margin-bottom: 40px;
+      }
+
+      .sidebar a {
+        color: #e0e0e0;
+        text-decoration: none;
+        margin: 12px 0;
+        padding: 8px 15px;
+        width: 100%;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar a:hover {
+        background-color: #1f4068;
+        color: #00f2ff;
+        box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+      }
+
+      /* Main content */
+      .main-content {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+      }
+
+      .card {
+        padding: 30px;
+        border-radius: 20px;
+        background: #0f3460;
+        box-shadow: 0 10px 30px rgba(0, 255, 255, 0.15);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        width: 100%;
+        max-width: 450px;
+        text-align: center;
+      }
+
+      .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 40px rgba(0, 255, 255, 0.3);
+      }
+
+      h2 {
+        font-weight: 600;
+        color: #00f2ff;
+      }
+
+      input {
+        background-color: #1f4068;
+        border: 1px solid #00f2ff;
+        color: #fff;
+        transition: all 0.3s ease-in-out;
+      }
+
+      input::placeholder {
+        color: #aaa;
+      }
+
+      input:focus {
+        background-color: #1a3d6d;
+        box-shadow: 0 0 10px rgba(0, 242, 255, 0.4);
+      }
+
+      #qrcode img {
+        animation: fadeIn 0.6s ease-in-out;
+        max-width: 100%;
+        margin-top: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .btn-glow {
+        background-color: #00f2ff;
+        color: #0f0f0f;
+        font-weight: bold;
+        padding: 10px 25px;
+        border: none;
+        border-radius: 50px;
+        transition: 0.3s ease-in-out;
+        box-shadow: 0 0 10px #00f2ff, 0 0 20px #00f2ff80;
+      }
+
+      .btn-glow:hover {
+        background-color: #00c3d4;
+        box-shadow: 0 0 20px #00f2ff, 0 0 30px #00f2ff;
+        transform: scale(1.05);
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+
+        body {
+          flex-direction: column;
+        }
+
+        .main-content {
+          padding-top: 60px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3>Ari Coding</h3>
+      <a href="#"> CSV File</a>
+      <a href="#"> Sheet</a>
+      <a href="#">ℹ About</a>
+      <a href="https://github.com/Arindam-99"> Notes Section</a>
+    </div>
+
+    <!-- Main content -->
+    <div class="main-content">
+      <div class="card">
+        <h2 class="mb-4">QR Code Generator</h2>
+        <input
+          type="text"
+          id="qrText"
+          class="form-control mb-3"
+          placeholder=" Enter text or URL"
+        />
+        <button class="btn btn-glow" onclick="generateQR()">Generate QR</button>
+        <div id="qrcode" class="mt-4"></div>
+      </div>
+    </div>
+
+    <script>
+      function generateQR() {
+        const qrText = document.getElementById("qrText").value.trim();
+        const qrCodeDiv = document.getElementById("qrcode");
+
+        if (qrText === "") {
+          qrCodeDiv.innerHTML =
+            "<p class='text-warning fw-semibold mt-3'> Please enter some text or URL.</p>";
+          return;
+        }
+
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(
+          qrText
+        )}&size=200x200`;
+        qrCodeDiv.innerHTML = `<img src="${qrUrl}" alt="QR Code" class="img-fluid">`;
+      }
+    </script>
+  </body>
+</html>
