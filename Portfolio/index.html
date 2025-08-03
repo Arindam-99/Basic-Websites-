@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arindam Das - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/Assignment_2B/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <h3>Arindam Das</h3>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li>
+          <a href="https://github.com/Arindam-99" target="_blank"
+            ><i class="fab fa-github"></i
+          ></a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/feed/" target="_blank"
+            ><i class="fab fa-linkedin"></i
+          ></a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+      <div class="hero-left">
+        <img src="/Assignment_2B/dp.jpg" alt="Profile" class="profile-pic" />
+      </div>
+      <div class="hero-right">
+        <h1>I am a <span class="animated-text"></span></h1>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills" id="skills">
+      <h2>My Skills
+      </h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/C_Programming_Language.svg" alt="C" />
+          <p>C</p>
+        </div>
+        <div class="skill-card">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1200px-Python-logo-notext.svg.png" alt="Python" />
+          <p>Python</p>
+        </div>
+        <div class="skill-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpV5xQO0gzBOEI6l9310e3OYtzZDi4mNEUTw&s" alt="Java" />
+          <p>Java</p>
+        </div>
+        <div class="skill-card">
+          <img src="https://mochikit.com/wp-content/uploads/2019/01/React_logo-300x169.png" alt="ReactJS" />
+          <p>ReactJS</p>
+        </div>
+        <div class="skill-card">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/1200px-Node.js_logo.svg.png" alt="NodeJS" />
+          <p>NodeJS</p>
+        </div>
+        <div class="skill-card">
+          <img src="https://lh5.googleusercontent.com/proxy/wf3WgS32oIHHUpd2SIL57uWHnzY0HfZV1jsfBzfBk9gT6QBa-lgIBcNim7fABD8W8CrO7Q4eYlouO3AYmLAVHIk_UoErlpSjiVUbHlWBsMQYLCsSR6EyhKf79G5nfjpnPgheLYlWAw" alt="JavaScript" />
+          <p>JavaScript</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section class="certifications" id="certifications">
+      <h2>Certifications</h2>
+      <p>Full Stack Developer</p>
+      <p>Java Programming - Oracle Certified</p>
+      <p>Data Structures and Algorithms - Coding Ninjas</p>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+      <h2>Projects</h2>
+      <ul>
+        <li>
+          <strong>Nezto</strong> - MERN stack, AI fraud laundry
+        </li>
+        <li>
+          <strong>Medismart</strong> - Smart Hospital Management System
+        </li>
+        <li>
+          <strong>PDF converter</strong> - Convert, Merge, Compress PDFs
+        </li>
+         <li>
+          <strong>Ai powered voice assistant</strong> - Fully emotional human typed
+        </li>
+         <li>
+          <strong>Chess Game </strong> - Ai powered chess game center using typescript 
+        </li>
+      </ul>
+    </section>
+
+    <!-- Other Stuff -->
+    <section class="others" id="others">
+      <h2>Other Stuff</h2>
+      <p>
+        I also enjoy writing blogs, contributing to open-source projects, and
+        exploring new tech like Web3 and AI tools.
+      </p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>copyright 2025 Arindam Das | Made with love | Indian</p>
+    </footer>
+
+    <!-- Animated Text Script -->
+    <script>
+      const texts = [
+        "Developer",
+        "Tech Explorer",
+        "Full Stack Engineer",
+        "Problem Solver",
+        "Own a Startup Business"
+      ];
+      let count = 0;
+      let textSpan = document.querySelector(".animated-text");
+      let isDeleting = false;
+      let currentText = "";
+      let charIndex = 0;
+
+      function typeWriter() {
+        const fullText = texts[count];
+
+        if (isDeleting) {
+          currentText = fullText.substring(0, charIndex - 1);
+          charIndex--;
+        } else {
+          currentText = fullText.substring(0, charIndex + 1);
+          charIndex++;
+        }
+
+        textSpan.textContent = currentText;
+
+        let typeSpeed = isDeleting ? 50 : 100;
+
+        if (!isDeleting && charIndex === fullText.length) {
+          typeSpeed = 2000; // Pause at end
+          isDeleting = true;
+        } else if (isDeleting && charIndex === 0) {
+          isDeleting = false;
+          count = (count + 1) % texts.length;
+          typeSpeed = 500; // Pause before next word
+        }
+
+        setTimeout(typeWriter, typeSpeed);
+      }
+
+      // Start the animation
+      typeWriter();
+    </script>
+  </body>
+</html>
