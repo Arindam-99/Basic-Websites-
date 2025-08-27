@@ -1,0 +1,101 @@
+
+    body {
+      display: flex;
+      scroll-behavior: smooth;
+      transition: background 0.4s, color 0.4s;
+      font-family: "Poppins", sans-serif;
+    }
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      position: fixed;
+      background: linear-gradient(180deg, #1e3c72, #2a5298);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 10px;
+      box-shadow: 4px 0 12px rgba(0,0,0,0.3);
+      animation: slideIn 0.8s ease-in-out;
+    }
+    .sidebar h4 {
+      animation: fadeIn 1s ease-in-out;
+    }
+    .sidebar a {
+      text-decoration: none;
+      color: white;
+      display: block;
+      padding: 12px 18px;
+      border-radius: 8px;
+      margin: 5px 0;
+      transition: all 0.3s ease;
+    }
+    .sidebar a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateX(6px);
+    }
+    .content {
+      margin-left: 260px;
+      padding: 20px;
+      width: 100%;
+      animation: fadeIn 1s ease-in-out;
+    }
+    /* Home Section */
+    #home h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, #ff6a00, #ee0979);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeInDown 1s ease-in-out;
+    }
+    #home .btn-primary {
+      animation: pulse 1.5s infinite;
+    }
+    /* Cards */
+    .card {
+      border: none;
+      border-radius: 15px;
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+    .recipe-img {
+      height: 200px;
+      object-fit: cover;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+    /* Dark mode */
+    .dark-mode {
+      background-color: #181818;
+      color: white;
+    }
+    .dark-mode .card {
+      background-color: #252525;
+      color: white;
+    }
+    .dark-mode .sidebar {
+      background: linear-gradient(180deg, #000000, #434343);
+    }
+    /* Animations */
+    @keyframes slideIn {
+      from {transform: translateX(-100%);}
+      to {transform: translateX(0);}
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    @keyframes fadeInDown {
+      from {opacity:0; transform: translateY(-30px);}
+      to {opacity:1; transform: translateY(0);}
+    }
+    @keyframes pulse {
+      0% {transform: scale(1);}
+      50% {transform: scale(1.05);}
+      100% {transform: scale(1);}
+    }
