@@ -1,0 +1,31 @@
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Wallet Base - Blue -->
+  <rect x="15" y="35" width="70" height="45" rx="8" fill="url(#blueGradient)"/>
+  
+  <!-- Money Cards - Green -->
+  <rect x="25" y="25" width="60" height="35" rx="6" fill="url(#greenGradient)"/>
+  <rect x="30" y="20" width="55" height="30" rx="5" fill="url(#lightGreenGradient)"/>
+  
+  <!-- Dollar Sign -->
+  <text x="50" y="45" text-anchor="middle" dominant-baseline="middle" fill="white" font-family="Arial, sans-serif" font-weight="bold" font-size="24">$</text>
+  
+  <!-- Small Circle Detail -->
+  <circle cx="75" cy="45" r="4" fill="rgba(255,255,255,0.3)"/>
+  <circle cx="75" cy="45" r="2" fill="white"/>
+  
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e40af"/>
+      <stop offset="100%" stop-color="#3730a3"/>
+    </linearGradient>
+    <linearGradient id="greenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#16a34a"/>
+      <stop offset="100%" stop-color="#15803d"/>
+    </linearGradient>
+    <linearGradient id="lightGreenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </linearGradient>
+  </defs>
+</svg>
